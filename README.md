@@ -2,7 +2,7 @@
 
 # Mixed.SVM
 
-A Bayesian mixed effects Support Vector Machine for learning and predicting daily substance use disorder patterns.
+A Bayesian mixed effects Support Vector Machine for learning and predicting daily alcohol use disorder patterns.
 
 ## Table of Contents
 
@@ -52,7 +52,7 @@ A Bayesian mixed effects Support Vector Machine for learning and predicting dail
 
 # <a name="project-motivation"></a>Project Motivation
 
-Substance use disorder (SUD) is a heterogeneous disorder. Classification algorithms may accelerate SUD research by parsing heterogeneity in clinically meaningful ways. Machine learning algorithms are capable of analyzing high dimensional data, but lack the ability to model the more complicated features inherent in SUD data. Inspired by a study of heavy drinkers that collected longitudinal neuroimaging, daily logs, and extensive self-report and interview assessments (ABQ DrinQ), we developed an algorithm for learning and predicting SUD patterns. We recast support vector machines (SVMs), a common classification technique, into a Bayesian model extended to handle mixed effects. We then apply these methods to ABQ DrinQ to develop models of alcohol use patterns and risk factors for heavy drinking. We identified gender, age, and time varying usage of nicotine, cannabis, and other drugs as significant risk factors of heavy drinking behavior. The model classifies 84% of heavy drinking days correctly. The algorithms and tools to summarize the results are packaged into a source code repository for researchers to explore, along with examples in an interactive Jupyter notebook. SUD researchers may use this toolkit to characterize daily use patterns and identity risk factors of daily use in their own studies. Ultimately, understanding patterns of substance use and risk for substance use could be used for developing individualized interventions. 
+Alcohol use disorder (AUD) is a heterogeneous disorder. Classification algorithms may accelerate AUD research by parsing heterogeneity in clinically meaningful ways. Machine learning algorithms are capable of analyzing high dimensional data, but lack the ability to model the more complicated features inherent in AUD data. Inspired by a study of heavy drinkers that collected longitudinal neuroimaging, daily logs, and extensive self-report and interview assessments (ABQ DrinQ), we developed an algorithm for learning and predicting AUD patterns. We recast support vector machines (SVMs), a common classification technique, into a Bayesian model extended to handle mixed effects. We then apply these methods to ABQ DrinQ to develop models of alcohol use patterns and risk factors for heavy drinking. We identified gender, age, and time varying usage of nicotine, cannabis, and other drugs as significant risk factors of heavy drinking behavior. The model classifies 84% of heavy drinking days correctly. The algorithms and tools to summarize the results are packaged into a source code repository for researchers to explore, along with examples in an interactive Jupyter notebook. AUD researchers may use this toolkit to characterize daily use patterns and identity risk factors of daily use in their own studies. Ultimately, understanding patterns of alcohol use and risk for alcohol use could be used for developing individualized interventions. 
 
 # <a name="how-do-i-run-it-how-does-it-work"></a>How Do I Run It/How Does It Work
 
@@ -64,7 +64,7 @@ Please see the paper for details on the methodology.
 
 # <a name="roadmap"></a>Roadmap
 
-We plan to continue to develop the toolkit to help substance use disorder (SUD) researchers gain new insights from their study data.  The toolkit consists of machine learning algorithms adapted to handle mixed effects (e.g., Support Vector Machine) and Jupyter notebooks to help the user understand and apply the algorithms.
+We plan to continue to develop the toolkit to help alcohol use disorder (AUD) researchers gain new insights from their study data.  The toolkit consists of machine learning algorithms adapted to handle mixed effects (e.g., Support Vector Machine) and Jupyter notebooks to help the user understand and apply the algorithms.
 
 # <a name="installation"></a>Installation
 
