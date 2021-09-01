@@ -123,7 +123,7 @@ directory.
 
 # <a name="changelog"></a>Changelog
 # 
-Please see the <a href="CHANGELOG">`CHANGELOG`</a> file in the project's
+Please see the <a href="CHANGELOG.md">`CHANGELOG.md`</a> file in the project's
 root directory.
 
 # <a name="security"></a>Security
