@@ -458,7 +458,7 @@ Ind.trajectory.pretty<-function(subj, X, T, U, MCMC, burn, knot.seq, Tmax){
                   
 
     fig <- ggplot(data, aes(x=x,y=y,col=col)) + geom_point(size=1) + 
-    theme(text=element_text(size=11, family="Arial"),legend.position="bottom") + labs(title=paste0(subj)) + xlab("Days") + 
+    theme(text=element_text(size=11, family="Courier"),legend.position="bottom") + labs(title=paste0(subj)) + xlab("Days") + 
     ylab("f(Days)") + #xlim(0,700) + ylim(-3,3) +
     scale_colour_discrete(name  ="Substance Use",
       breaks=c('#FF0000FF','#FFBF00FF','#80FF00FF','#00FF40FF','#00FFFFFF','#0040FFFF','#8000FFFF','#FF00BFFF'),
@@ -514,5 +514,212 @@ log.summaries <- function(iid, timeframe,visitday,includevisitday) {
     }
     return(results)
 }
+
+#######################################################################
+# Computes model performance metrics for the Bayesian mixed effects SVM
+Pred.summary.MSVM<-function(MCMC.res,Y, X, T, U, Tmax, knot.seq=c(.5), Iter, burn.in){
+
+  beta<-MCMC.res$Beta
+  gamma<-MCMC.res$Gamma
+
+
+  ############################################################
+  # Structure the data
+  user<-unique(U)    # Identify unique subjects
+  J<-length(user)
+
+  n.l<-lapply(1:J, function(j){ id<-which(U==user[j]); 
+                              time<-T[id]/Tmax ;
+                              ct<-time<=1;
+                              time<-time[ct==1];
+                              length(time)
+                            })
+
+  Z.l<-lapply(1:J, function(j){ id<-which(U==user[j]); 
+                              time<-T[id]/Tmax ;
+                              ct<-time<=1;
+                              time<-time[ct==1];  
+                              bs(time, knots=knot.seq, Boundary.knots = c(0,1))   
+                            })
+
+  X.l<-lapply(1:J, function(j){ id<-which(U==user[j]); 
+                              time<-T[id]/Tmax ;
+                              ct<-time<=1;
+                              time<-time[ct==1];  
+                              Xt<-X[id,];
+                              Xt<-Xt[ct==1,]                                                       
+                              cbind(Xt)
+                            })
+     
+  Y.l<-lapply(1:J, function(j){ id<-which(U==user[j]); 
+                              Yt<-Y[id]; 
+                              time<-T[id]/Tmax ;
+                              ct<-time<=1;
+                              idy<-which(Yt==0); 
+                              Yt[idy]<--1;
+                              Yt<-Yt[ct==1] 
+                              return(Yt)
+                            })
+
+  ##################################################
+  # Structure design matrices specifically for SVM 
+
+  Xt.l<-lapply(1:J,function(j){X.l[[j]]*as.vector(Y.l[[j]])})
+  Zt.l<-lapply(1:J,function(j){Z.l[[j]]*as.vector(Y.l[[j]])})
+
+  ##################################################################################################################
+  ##################################################################################################################
+  # Buidling the fixed effects design matrix 
+
+  Xt<-NULL
+  X<-NULL
+  Y<-NULL
+
+  for(j in 1:J){
+    Xt<-rbind(Xt,Xt.l[[j]])
+    X<-rbind(X,X.l[[j]])
+    Y<-c(Y,Y.l[[j]])
+  }
+
+
+  TP<-rep(-99,Iter)
+  FP<-rep(-99,Iter)
+  TN<-rep(-99,Iter)
+  FN<-rep(-99,Iter)
+
+  for(g in 1:Iter){
+  
+    ZG.l<-lapply(1:J,function(j){Z.l[[j]]%*%gamma[g,,j]})
+    ZG<-unlist(ZG.l,use.names = FALSE)
+    XB<-X%*%beta[g,] 
+    Yp<-XB+ZG >=0
+    Yp[Yp==0]<- -1 
+
+    TP[g]<- mean(  Yp[Y==1]==Y[Y==1]   )
+    FP[g]<- mean(  Yp[Y==-1]!=Y[Y==-1]   )
+    TN[g]<- mean(  Yp[Y==-1]==Y[Y==-1]   )
+    FN[g]<- mean(  Yp[Y==1]!=Y[Y==1]   )
+  
+  }
+
+  TPm <- mean(TP[burn.in:Iter])
+  FPm <- mean(FP[burn.in:Iter])
+  TNm <- mean(TN[burn.in:Iter])
+  FNm <- mean(FN[burn.in:Iter])
+
+
+  return(list("TP"=TPm,"FP"=FPm,"TN"=TNm,"FN"=FNm))
+}
+
+
+
+#######################################################################
+# Computes model performance metrics for the Bayesian fixed effects SVM
+# i.e., standard SVM
+Pred.summary.SVM<-function(MCMC.resY, X, T, U, Sim=10000, burn.in){
+
+  beta<-MCMC.res$Beta
+
+  ############################################################
+  # Structure the data
+  user<-unique(U)    # Identify unique subjects
+  J<-length(user)
+
+  X.l<-lapply(1:J, function(j){ id<-which(U==user[j]); 
+                              time<-T[id]/Tmax ;
+                              ct<-time<=1;
+                              time<-time[ct==1];  
+                              Xt<-X[id,];
+                              Xt<-Xt[ct==1,]                                                       
+                              cbind(Xt)
+                            })
+     
+  Y.l<-lapply(1:J, function(j){ id<-which(U==user[j]); 
+                              Yt<-Y[id]; 
+                              time<-T[id]/Tmax ;
+                              ct<-time<=1;
+                              idy<-which(Yt==0); 
+                              Yt[idy]<--1;
+                              Yt<-Yt[ct==1] 
+                              return(Yt)
+                            })
+
+
+  ##################################################################################################################
+  ##################################################################################################################
+  # Buidling the fixed effects design matrix 
+
+ 
+  X<-NULL
+  Y<-NULL
+  for(j in 1:J){
+    X<-rbind(X,X.l[[j]])
+    Y<-c(Y,Y.l[[j]])
+  }
+
+
+
+  TP<-rep(-99,Iter)
+  FP<-rep(-99,Iter)
+  TN<-rep(-99,Iter)
+  FN<-rep(-99,Iter)
+
+  for(g in 1:Iter){
+  
+    XB<-X%*%beta[g,] 
+    Yp<-XB >=0
+    Yp[Yp==0]<- -1 
+
+    TP[g]<- mean(  Yp[Y==1]==Y[Y==1]   )
+    FP[g]<- mean(  Yp[Y==-1]!=Y[Y==-1]   )
+    TN[g]<- mean(  Yp[Y==-1]==Y[Y==-1]   )
+    FN[g]<- mean(  Yp[Y==1]!=Y[Y==1]   )
+  
+  }
+
+  mean(TP[burn.in:Iter])
+  mean(FP[burn.in:Iter])
+  mean(TN[burn.in:Iter])
+  mean(FN[burn.in:Iter])
+
+
+  return(list("TP"=TP,"FP"=FP,"TN"=TN,"FN"=FN))
+}
+
+########################################################################
+# Functions to plot subject specific trajectory with credible 
+# intervals around functon values
+Ind.trajectory.CI<-function(subj, T, U, MCMC, burn, knot.seq, Tmax){
+    user<-unique(U)    # Identify unique subjects
+    lower<-burn
+    upper<-dim(MCMC$Beta)[1]
+
+    sel<-which(user==subj)
+
+    id<-which(U==subj)
+    time<-T[id]/Tmax ;
+    ct<-time<=1;
+    time<-time[ct==1];  
+ 
+    B<-bs(time, knots=knot.seq, Boundary.knots = c(0,1))                           
+    
+    f.est<-matrix(-99,nrow=length(lower:upper),ncol=length(time))
+    tick<-1
+    for(i in lower:upper){
+        f.est[tick,]<- B%*%MCMC$Gamma[i,,sel]
+        tick<-tick+1
+    }
+    fhat<-apply(f.est,2,mean)
+    fl<-apply(f.est,2, quantile, prob=0.025)
+    fu<-apply(f.est,2, quantile, prob=0.975)
+    fmax<-max(fu)
+    fmin<-min(fl)
+   
+    data <- data.frame(x=time*Tmax, fhat,fu,fl)
+    fig <- ggplot(data, aes(x=x,y=fhat)) + geom_line() + geom_hline(yintercept=0,color="red") + xlab("Days") + ylab("f(Days)") + geom_line(aes(x=x,y=fu),linetype="dashed",color="blue") + geom_line(aes(x=x,fl), linetype="dashed", color="blue") + labs(title=paste0(subj)) 
+    
+    return(fig)
+}
+
 
 
