@@ -17,18 +17,29 @@ Work**](#how-do-i-run-it-how-does-it-work) - [**Roadmap**](#roadmap) -
 
 # <a name="project-organization"></a>Project Organization
 # 
-    ├── AUTHORS ├── CHANGELOG.md ├── CODE_OF_CONDUCT.md ├──
-    CONTRIBUTING.md ├── CONTRIBUTORS ├── data │   └── processed │      
-    └── example.RData                    <- simulated daily substance
-    use data ├── docs ├── LICENSE ├── notebooks                         
-          <- Jupyter notebooks │   ├──
-    daily-drinking-notebook-demo.ipynb  <- interactive analysis of
-    simulated daily substance use data │   └──
-    daily-drinking-notebook.ipynb        <- analysis of the ABQ DrinQ
-    data ├── README.md ├── reports │   ├── figures │   └── results.RData
-                       <- saved results from running mixed-svm ├──
-    SECURITY ├── src │   └── R │       └── mixed-svm.R                  
-     <- source code for the MCMC algorithm and summaries └── VERSION
+  	├── AUTHORS
+    ├── CHANGELOG.md
+    ├── CODE_OF_CONDUCT.md
+    ├── CONTRIBUTING.md
+    ├── CONTRIBUTORS
+    ├── data
+    │   └── processed
+    │       └── example.RData                    <- simulated daily substance use data
+    ├── docs
+    ├── LICENSE
+    ├── notebooks                                <- Jupyter notebooks
+    │   ├── daily-drinking-notebook-demo.ipynb  <- interactive analysis of simulated daily substance use data
+    │   └── daily-drinking-notebook.ipynb        <- analysis of the ABQ DrinQ data
+    ├── README.md
+    ├── reports                      
+    │   ├── figures
+    │   └── results.RData                    <- saved results from running mixed-svm
+    ├── SECURITY
+    ├── src                            
+    │   └── R
+    │       └── mixed-svm.R                    <- source code for the MCMC algorithm and summaries
+    └── VERSION
+
 
 ---
 
