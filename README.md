@@ -7,13 +7,16 @@ predicting daily substance use disorder patterns.
 
 ## Table of Contents
 ## 
-- [**Project Organization**](#project-organization) - [**Team
-Members**](#team-members) - [**Project
-Motivation**](#project-motivation) - [**How Do I Run It/How Does It
-Work**](#how-do-i-run-it-how-does-it-work) - [**Roadmap**](#roadmap) -
-[**Installation**](#installation) - [**Contributing**](#contributing) -
-[**Contributors**](#contributors) - [**Changelog**](#changelog) -
-[**Security**](#security) - [**License**](#license)
+- [**Project Organization**](#project-organization) 
+- [**Team Members**](#team-members) 
+- [**Project Motivation**](#project-motivation) 
+- [**How Do I Run It/How Does It Work**](#how-do-i-run-it-how-does-it-work) 
+- [**Roadmap**](#roadmap) 
+- [**Installation**](#installation) 
+- [**Contributing**](#contributing) 
+- [**Changelog**](#changelog) 
+- [**Security**](#security) 
+- [**License**](#license)
 
 # <a name="project-organization"></a>Project Organization
 # 
@@ -45,8 +48,8 @@ Work**](#how-do-i-run-it-how-does-it-work) - [**Roadmap**](#roadmap) -
 
 # <a name="team-members"></a>Team Members
 # 
-- "James W. Baurley" <baurley@biorealm.ai> - "Christopher S. McMahan"
-mcmaha2@clemson.edu
+- "James W. Baurley" <baurley@biorealm.ai> 
+- "Christopher S. McMahan" <mcmaha2@clemson.edu>
 
 # <a name="project-motivation"></a>Project Motivation
 # 
